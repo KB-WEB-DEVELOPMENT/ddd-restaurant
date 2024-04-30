@@ -27,12 +27,12 @@ use Kami\Restaurant\Domain\Model\Meal\MealProductRepository;
 final class ContainerBuilderFactory
 {
     public static function create(): ContainerBuilder 
-	{
+    {
         $containerBuilder = new ContainerBuilder();
 
         $containerBuilder
             ->register(SqlConnectionManager::class,SqlConnectionManager::class)
-			->setFactory([SqlConnectionManager::class,'createMealProductTable']);
+	    ->setFactory([SqlConnectionManager::class,'createMealProductTable'])
             ->setFactory([SqlConnectionManager::class,'createMealProductTable']);
 			
         $containerBuilder
@@ -40,7 +40,7 @@ final class ContainerBuilderFactory
             ->setFactory([DoctrineEntityManager::class,'mealEntityManagerInstance'])
             ->setAutowired(true);
 			
-		$containerBuilder
+	 $containerBuilder
             ->register(DoctrineEntityManager::class,DoctrineEntityManager::class)
             ->setFactory([DoctrineEntityManager::class,'drinklEntityManagerInstance'])
             ->setAutowired(true);
@@ -49,14 +49,14 @@ final class ContainerBuilderFactory
             ->register(MealProductRepository::class,InMemoryMealProductRepository::class)
             ->setAutowired(true);
 			
-		/* 
-		
+	/* 
+	
 		We could also register the following repositories in the same way: 	
 
-			InMemoryMealProductRepository, InMemoryDrinkProductRepository,SqlMealProductRepository,SqlDrinkProductRepository,
-			DoctrineMealProductRepository,DoctrineDrinkProductRepository		
+		InMemoryMealProductRepository, InMemoryDrinkProductRepository,SqlMealProductRepository,SqlDrinkProductRepository,
+		DoctrineMealProductRepository,DoctrineDrinkProductRepository		
 
-		*/
+	*/
 		
         $containerBuilder
             ->register(UseCaseApplication::class,UseCaseApplication::class)
@@ -69,11 +69,11 @@ final class ContainerBuilderFactory
     }
 
     public static function createInMemory(): ContainerBuilder
-	{
+    {
         $containerBuilder = new ContainerBuilder();
 
         $containerBuilder->register(MealProductRepository::class,InMemoryMealProductRepository::class);
-		// after testing above line works, also needed : $containerBuilder->register(DrinkProductRepository::class,InMemoryDrinkProductRepository::class);
+	// after testing above line works, also needed : $containerBuilder->register(DrinkProductRepository::class,InMemoryDrinkProductRepository::class);
 		
         $containerBuilder->compile();
 
