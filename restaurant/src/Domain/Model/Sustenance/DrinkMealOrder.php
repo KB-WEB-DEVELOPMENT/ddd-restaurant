@@ -26,17 +26,15 @@ use Kami\Restaurant\Domain\Model\Drink\DrinkProductRepository;
 final class DrinkMealOrder
 { 
     private readonly UuidInterface $id;
-	private array $mealItems = [];
-	private array $drinkItems = [];
+    private array $mealItems = [];
+    private array $drinkItems = [];
 		
     public function __construct(
-		private MealProductRepository $mealProductRepository,
-		private DrinkProductRepository $drinkProductRepository
-	)
-    {		 	
-		$this->id = Uuid::uuid4();
-		
-	}
+    	private MealProductRepository $mealProductRepository,
+	private DrinkProductRepository $drinkProductRepository
+    ) {		 	
+	$this->id = Uuid::uuid4();	
+    }
 
     public function id(): UuidInterface
     {
@@ -52,216 +50,217 @@ final class DrinkMealOrder
     {
        $mealProductId = $mealItem->mealProductId;
 	   	   
-	   $mealProducts  = ($this->mealProductRepository)::all();
+       $mealProducts  = ($this->mealProductRepository)::all();
 	   
-	   $mealProductIds = [];
-	   $mealProductIds = array_map(fn($mealProduct) => $mealProduct->id(),$mealProducts);
+       $mealProductIds = [];
 	   
-	   try {
-			if (!in_array($mealProductId,$mealProductIds)) {
-				throw new InvalidMealProductIdException(); 
-			}	
-		}
+       $mealProductIds = array_map(fn($mealProduct) => $mealProduct->id(),$mealProducts);
+	   
+       try {
+       		if (!in_array($mealProductId,$mealProductIds)) {
+	   	   throw new InvalidMealProductIdException(); 
+		}	
+	}
 	    
-		$this->mealItems[] = $mealItem;
+	$this->mealItems[] = $mealItem;
 	   
     }
 	
     public function addDrinkItem(DrinkItem $drinkItem): void
     {
-		$drinkProductId = $drinkItem->drinkProductId;
+      $drinkProductId = $drinkItem->drinkProductId;
 	   	   
-		$drinkProducts = [];   
-	    $drinkProducts  = ($this->drinkProductRepository)::all();
-	   
-	    $drinkProductIds = [];
-	    $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$drinkProducts);
-	   
-	    try {
-			if (!in_array($drinkProductId,$drinkProductIds)) {
-				throw new InvalidDrinkProductIdException(); 
-			}	
-		}
+      $drinkProducts = [];   
 	    
-		$this->drinkItems[] = $drinkItem;    
+      $drinkProducts  = ($this->drinkProductRepository)::all();
+	   
+      $drinkProductIds = [];
+	    
+      $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$drinkProducts);
+	   
+      try {
+       	  if (!in_array($drinkProductId,$drinkProductIds)) {
+	     throw new InvalidDrinkProductIdException(); 
+	   }	
+	}
+	    
+      $this->drinkItems[] = $drinkItem;    
     }
 	
     public function removeMealItem(string $mealItemId): void
     {
         $mealItemsIds = [];
-		$mealItemsIds = array_map(fn($mealItem) => $mealItem->toString(),$this->mealItems);
+		
+	$mealItemsIds = array_map(fn($mealItem) => $mealItem->toString(),$this->mealItems);
 	   
-	    try {
-			if (!in_array($mealItemId,$mealItemsIds)) {
-				throw new InvalidMealItemIdException();
-			}	
-		}
-				
-		if (($key = array_search($mealItemId,$mealItemsIds)) !== false) {
-			unset($this->mealItems[$key]);
-		}	   
+	try {
+		if (!in_array($mealItemId,$mealItemsIds)) {
+		   throw new InvalidMealItemIdException();
+		}	
 	}
-	
-	public function removeDrinkItem(string $drinkItemId): void
-    {
-        $drinkItemsIds = [];
-		$drinkItemsIds = array_map(fn($drinkItem) => $drinkItem->toString(),$this->drinkItems);
-	   
-	    try {
-			if (!in_array($drinkItemId,$drinkItemsIds)) {
-				throw new InvalidDrinkItemIdException(); 
-			}	
-		}
 				
-		if (($key = array_search($drinkItemId,$drinkItemsIds)) !== false) {
-			unset($this->drinkItems[$key]);
-		}
+	if (($key = array_search($mealItemId,$mealItemsIds)) !== false) {
+		unset($this->mealItems[$key]);
+	}	   
     }
 	
-	public function removeAllMealItems(): void
-	
-		if (count($this->mealItems) > 0) {
-			unset($this->mealItems);
+    public function removeDrinkItem(string $drinkItemId): void
+    {
+        $drinkItemsIds = [];
+		
+	$drinkItemsIds = array_map(fn($drinkItem) => $drinkItem->toString(),$this->drinkItems);
+	   
+	try {
+		if (!in_array($drinkItemId,$drinkItemsIds)) {
+		   throw new InvalidDrinkItemIdException(); 
 		}	
-	
 	}
-	
-	public function removeAllDrinkItems(): void
-	
-		if (count($this->drinkItems) > 0) {
-			unset($this->drinkItems);
-		}
+				
+	if (($key = array_search($drinkItemId,$drinkItemsIds)) !== false) {
+		unset($this->drinkItems[$key]);
 	}
+    }
 	
-	public function removeAllSustenanceItems(): void
-	
-		$this->removeAllMealItems();
-		$this->removeAllDrinkItems(); 
+    public function removeAllMealItems(): void
+    {	
+    	if (count($this->mealItems) > 0) {
+	   unset($this->mealItems);
 	}	
+    }
+	
+    public function removeAllDrinkItems(): void
+    {	
+       if (count($this->drinkItems) > 0) {
+	  unset($this->drinkItems);
+	}
+    }
+	
+    public function removeAllSustenanceItems(): void
+    {		
+   	$this->removeAllMealItems();
+	$this->removeAllDrinkItems(); 
+    }	
 	
     public function mealItemsCostNoVat(): int
     {
         $foundMealProductIds = [];
-		$quantities = [];
-		$mealProducts = [];
-		$allMealProductIds = [];
-		$prices = [];
-		$totalCostArray = [];
-		
-		
-		if (count($this->mealItems) == 0){
-			return 0;
-		} 	
-	
-		$foundMealProductIds = array_map(fn($mealItem) => $mealItem->mealProductId,$this->mealItems);
-		
-		$quantities = array_map(fn($mealItem) => $mealItem->quantity,$this->mealItems);
-		
-		$mealProducts =  ($this->mealProductRepository)::all();	
-		
-		$allMealProductIds = array_map(fn($mealProduct) => $mealProduct->id(),$mealProducts);
-		
-		$prices =   array_filter(
-						$foundMealProductIds,
-						function ($foundMealProductId) {
-							foreach ($mealProducts as $mealProduct) {	
-								if ($foundMealProductId == $mealProduct->id())
-								{
-									return $mealProduct->priceInt();
-							    } 
-							}								
-						}
-					); 
-
-		$totalCostArray  =  array_map(function($price,$quantity) {
-								return $price * $quantity;
-							},$prices,$quantities);
-					
-		$totalCost = array_sum($totalCostArray);			
+	$quantities = [];
+	$mealProducts = [];
+	$allMealProductIds = [];
+	$prices = [];
+	$totalCostArray = [];
 			
-		return $totalCost;
+	if (count($this->mealItems) == 0){
+	   return 0;
+	} 	
+	
+	$foundMealProductIds = array_map(fn($mealItem) => $mealItem->mealProductId,$this->mealItems);
+		
+	$quantities = array_map(fn($mealItem) => $mealItem->quantity,$this->mealItems);
+		
+	$mealProducts =  ($this->mealProductRepository)::all();	
+		
+	$allMealProductIds = array_map(fn($mealProduct) => $mealProduct->id(),$mealProducts);
+		
+	$prices =   array_filter(
+			$foundMealProductIds,
+			function ($foundMealProductId) {
+				foreach ($mealProducts as $mealProduct) {	
+					if ($foundMealProductId == $mealProduct->id())
+					{
+					    return $mealProduct->priceInt();
+					} 
+				}								
+			}
+		     ); 
+
+	$totalCostArray  =  array_map(function($price,$quantity) {
+			     	return $price * $quantity;
+			    },$prices,$quantities);
+					
+	$totalCost = array_sum($totalCostArray);			
+			
+	return $totalCost;
 
     }		
   	
-	public function mealItemsCostWithVat(): int
+    public function mealItemsCostWithVat(): int
     {
         $costNoVat =  $this->mealItemsCostNoVat();
 		
-		$costVat = (int)($costNoVat*((float)VarRate::Food));
+	$costVat = (int)($costNoVat*((float)VarRate::Food));
 		
-		$sum = $costNoVat + $costVat;
+	$sum = $costNoVat + $costVat;
 		
-		return $sum; 
+	return $sum; 
     }
 	
-	public function drinkItemsCostNoVat(): int
+    public function drinkItemsCostNoVat(): int
     {
-		$foundDrinkProductIds = [];
-		$quantities = [];
-		$drinkProducts = [];
-		$allDrinkProductIds = [];
-		$prices = [];
-		$totalCostArray = [];
+     	$foundDrinkProductIds = [];
+	$quantities = [];
+	$drinkProducts = [];
+	$allDrinkProductIds = [];
+	$prices = [];
+	$totalCostArray = [];
 		
-		if (count($this->drinkItems) == 0){
-			return 0;
-		} 	
+	if (count($this->drinkItems) == 0){
+	   return 0;
+	} 	
 	
-		$foundDrinkProductIds = array_map(fn($drinkItem) => $drinkItem->drinkProductId,$this->drinkItems);
+	$foundDrinkProductIds = array_map(fn($drinkItem) => $drinkItem->drinkProductId,$this->drinkItems);
 		
-		$quantities = array_map(fn($drinkItem) => $drinkItem->quantity,$this->drinkItems);
+	$quantities = array_map(fn($drinkItem) => $drinkItem->quantity,$this->drinkItems);
 			
-		$drinkProducts =  ($this->drinkProductRepository)::all();
+	$drinkProducts =  ($this->drinkProductRepository)::all();
 
-		$allDrinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$drinkProducts);		
+	$allDrinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$drinkProducts);		
 		
-		$prices =   array_filter(
-						$foundDrinkProductIds,
-						function ($foundDrinkProductId) {
-							foreach ($drinkProducts as $drinkProduct) {	
-								if ($foundDrinkProductId == $drinkProduct->id())
-								{
-									return $drinkProduct->priceInt();
-							    } 
-							}								
-						}
-					); 
+	$prices =  array_filter(
+			$foundDrinkProductIds,
+			function ($foundDrinkProductId) {
+				foreach ($drinkProducts as $drinkProduct) {	
+					if ($foundDrinkProductId == $drinkProduct->id())
+					{
+					  return $drinkProduct->priceInt();
+					} 
+				}								
+			}
+		    ); 
 
-		$totalCostArray  =  array_map(function($price,$quantity) {
-								return $price * $quantity;
-							},$prices,$quantities);
+	$totalCostArray  =  array_map(function($price,$quantity) {
+				return $price * $quantity;
+			    },$prices,$quantities);
 					
-		$totalCost = array_sum($totalCostArray);			
+	$totalCost = array_sum($totalCostArray);			
 			
-		return $totalCost;
+	return $totalCost;
     }		
   	
-	public function drinkItemsCostWithVat(): int
+    public function drinkItemsCostWithVat(): int
     {
         $costNoVat =  $this->drinkItemsCostNoVat();
 		
-		$costVat = (int)($costNoVat*((float)VarRate::Drink));
+	$costVat = (int)($costNoVat*((float)VarRate::Drink));
 		
-		$sum = $costNoVat + $costVat;
+	$sum = $costNoVat + $costVat;
 		
-		return $sum; 
+	return $sum; 
     }
 	
-	public function totalCostInt(): int
+    public function totalCostInt(): int
     {
         $totalCostInt = $this->mealItemsCostWithVat() + $this->drinkItemsCostWithVat();
 		
-		return $totalCostInt; 
+	return $totalCostInt; 
     }
 
-	public function totalCostFormatted(): string
+    public function totalCostFormatted(): string
     {
        $totalCostInt = $this->totalCostInt();
 	   
-	   $totalCost = new Price($totalCostInt);
+       $totalCost = new Price($totalCostInt);
 
-	   return $totalCost->formatted();
-    }
-	
-	
+       return $totalCost->formatted();
+    }		
 }
