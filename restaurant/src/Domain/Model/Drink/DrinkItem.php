@@ -13,25 +13,24 @@ final class DrinkItem
     private readonly UuidInterface $id;
 	
     public function __construct( 	
-		private readonly string $drinkProductId,
-		private int $quantity
-	)
+	private readonly string $drinkProductId,
+	private int $quantity
+    )
 	
     {
-		try {
-			if (strlen(trim($drinkProductId)) == 0) {
-				throw new InvalidDrinkProductIdException();
-			}
-			if ($quantity <1) {
-				throw new InvalidQuantityException();  
-			}
-		}	
+	try {
+	   	if (strlen(trim($drinkProductId)) == 0) {
+	     		throw new InvalidDrinkProductIdException();
+		}
+		if ($quantity <1) {
+			throw new InvalidQuantityException();  
+		}
+	}	
 		
-		$this->drinkProductId = $drinkProductId;
-	    $this->quantity = $quantity; 	
-		$this->id = Uuid::uuid4();
-      
-	}
+	$this->drinkProductId = $drinkProductId;
+	$this->quantity = $quantity; 	
+	$this->id = Uuid::uuid4();  
+    }
 
     public function id(): UuidInterface
     {
