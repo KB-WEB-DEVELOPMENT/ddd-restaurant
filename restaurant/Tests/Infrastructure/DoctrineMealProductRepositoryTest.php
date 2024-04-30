@@ -19,7 +19,7 @@ final class DoctrineMealProductRepositoryTest extends TestCase
 	/* 
 	
 	1. File specific implementation of all the methods contained in InMemoryMealProductRepositoryTest.php
-    2. Those methods make use of all methods contained in DoctrineMealProductRepository.php
+        2. Those methods make use of all methods contained in DoctrineMealProductRepository.php
 	3. Working connection to a MySQL database assumed for testing (see file DoctrineEntityManager.php file)
 	
 	*/
