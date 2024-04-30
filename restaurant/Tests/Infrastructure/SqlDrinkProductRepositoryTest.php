@@ -19,7 +19,7 @@ final class SqlDrinkProductRepositoryTest extends TestCase
 	/* 
 	
 	1. File specific implementation of all the methods contained in InMemoryDrinkProductRepositoryTest.php
-    2. Those methods make use of all methods contained in SqlDrinkProductRepository.php
+        2. Those methods make use of all methods contained in SqlDrinkProductRepository.php
 	3. Working connection to a MySQL database assumed for testing.
 	
 	*/
