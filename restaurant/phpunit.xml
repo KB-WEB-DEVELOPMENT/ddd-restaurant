@@ -1,19 +1,19 @@
 <?xml version="1.0"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" bootstrap="vendor/autoload.php"
-		 xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+	       xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
 	<coverage processUncoveredFiles="true">
-		<include>
-			<directory suffix=".php">src/</directory>
-		</include>
+	   <include>
+	    <directory suffix=".php">src/</directory>
+	   </include>
 	</coverage>
 	<php>
-		<env name="MYSQL_DBNAME" value="restaurant_test" />
-		<env name="MYSQL_USER" value="root" />
-        <env name="MYSQL_PASSWORD" value="" />
+	   <env name="MYSQL_DBNAME" value="restaurant_test" />
+	   <env name="MYSQL_USER" value="root" />
+           <env name="MYSQL_PASSWORD" value="" />
 	</php>
 	<testsuites>
-		<testsuite name="Tests">
-			<directory>Tests</directory>
-		</testsuite>
+	   <testsuite name="Tests">
+	      <directory>Tests</directory>
+	   </testsuite>
 	</testsuites>
 </phpunit>
