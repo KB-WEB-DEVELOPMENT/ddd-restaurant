@@ -13,40 +13,38 @@ use Ramsey\Uuid\Uuid;
 final class MealProduct
 { 
     private readonly string $id;
-	private Price $cost;
+    private Price $cost;
  
     public function __construct( 
-	    private string $name,
-		private int|float $cost 
-	)
-	
-    {
-		try {
-			if (strlen(trim($name)) == 0) {
-				throw new InvalidProductNameException();
-			}
-			if ($cost <= 0) {
-				throw new InvalidPriceException();  
-			}	
-		}	
+	private string $name,
+	private int|float $cost 
+    ) {
+	 try {
+	      if (strlen(trim($name)) == 0) {
+	       throw new InvalidProductNameException();
+	     }
+             if ($cost <= 0) {
+	        throw new InvalidPriceException();  
+	    }	
+	 }	
 		
-		$this->name = $name;
-		$this->cost = is_int($cost) ? new Price($cost) : new Price((string)$cost);
-		$uuid = Uuid::uuid4();
-		$this->id = $uuid->toString();
-	}
+	$this->name = $name;
+	$this->cost = is_int($cost) ? new Price($cost) : new Price((string)$cost);
+	$uuid = Uuid::uuid4();
+	$this->id = $uuid->toString();
+    }
 
     public function id(): string
     {
         return $this->id;
     }
 		
-	public function name(): string
+    public function name(): string
     {
         return $this->name;
     }
 	
-	public function priceInt(): int
+    public function priceInt(): int
     {
         return ($this->cost)->toInt();
     }
@@ -56,28 +54,28 @@ final class MealProduct
         return ($this->cost)->formatted();
     }
 	
-	public function changeName(string $name): void
+    public function changeName(string $name): void
     {
         try {
-			if (strlen(trim($name)) == 0) {
-				throw new InvalidProductNameException();
-			}	
-		}
+	     if (strlen(trim($name)) == 0) {
+	         throw new InvalidProductNameException();
+	     }	
+	}
 		
-		$this->name = $name;		
+	$this->name = $name;		
     }
 
-	public function reprice(int|float $cost): void
+    public function reprice(int|float $cost): void
     {
-		try {
-			if ($cost <= 0) {
-				throw new InvalidPriceException(); 
-			}	
-		}
+       try {
+	  if ($cost <= 0) {
+	     throw new InvalidPriceException(); 
+	  }	
+       }	
+	
+       unset($this->cost);
 		
-		unset($this->cost);
-		
-		$this->cost = is_int($cost) ? new Price($cost) : new Price((string)$cost);	
+       $this->cost = is_int($cost) ? new Price($cost) : new Price((string)$cost);	
     }
 
 }
