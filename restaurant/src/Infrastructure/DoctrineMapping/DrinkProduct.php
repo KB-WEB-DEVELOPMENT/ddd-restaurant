@@ -11,21 +11,21 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Table(name: 'drinkProducts')]
 class DrinkProduct
 {
-    #[ORM\Id]
-    #[ORM\Column(type: 'string')]
-    private readonly string $id;
+   #[ORM\Id]
+   #[ORM\Column(type: 'string')]
+   private readonly string $id;
 
-    #[ORM\Column(type: 'string')]
-    private string $name;
+   #[ORM\Column(type: 'string')]
+   private string $name;
 	
-    #[ORM\Column(type: 'int')]
-    private int $cost;
+   #[ORM\Column(type: 'int')]
+   private int $cost;
 		
-	public function __construct()
-    {
-		$uuid = Uuid::uuid4();
-		$this->id = $uuid->toString();  
-    }
+   public function __construct()
+   {
+      $uuid = Uuid::uuid4();
+      $this->id = $uuid->toString();  
+   }
 
     public function getId(): string
     {
@@ -37,7 +37,7 @@ class DrinkProduct
         return $this->name;
     }
 	
-	public function setName(string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -47,7 +47,7 @@ class DrinkProduct
         return $this->cost;
     }
 	
-	public function setCost(int $cost): void
+    public function setCost(int $cost): void
     {
         $this->cost = $cost;
     }		
