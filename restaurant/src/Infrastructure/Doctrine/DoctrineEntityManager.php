@@ -11,39 +11,37 @@ use Doctrine\ORM\ORMSetup;
 
 final class DoctrineEntityManager {
 		
-	private static self|null $instance = null;
+   private static self|null $instance = null;
 	
-	private EntityManager $mealEntityManager;
-	private EntityManager $drinkEntityManager;
-	private array $path = array(__DIR__ . '/../DoctrineMapping');
-	private bool $isDevMode = true;
-    private string	$driver = 'pdo_mysql';
-	private string	$user ='root';
-	private string	$password='';
-	private string	$dbname='restaurant_test';
+   private EntityManager $mealEntityManager;
+   private EntityManager $drinkEntityManager;
+   private array $path = array(__DIR__ . '/../DoctrineMapping');
+   private bool $isDevMode = true;
+   private string $driver = 'pdo_mysql';
+   private string $user ='root';
+   private string $password='';
+   private string $dbname='restaurant_test';
 			
-	private function __construct(
-	){		
-		$dbParams = [
-			'driver'   => $this->driver,
-			'user'     => $this->user,
-			'password' => $this->password,
-			'dbname'   => $this->dbname,
-		];
+    private function __construct(
+    ){		
+       $dbParams = [
+	  'driver' => $this->driver,
+	  'user' => $this->user,
+	  'password' => $this->password,
+	  'dbname'   => $this->dbname,
+       ];
 				
-		try {
-				
-				$config = ORMSetup::createAttributeMetadataConfiguration($this->path,$this->isDevMode);
-				$connection = DriverManager::getConnection($dbParams,$config);
-			    $this->mealEntityManager = new EntityManager($connection,$config);
-				$this->drinkEntityManager = new EntityManager($connection,$config);
-				
-        }   catch (Exception $e) {
-                 echo $e->getMessage();   
-            }		
-	}
+	try {			
+	   $config = ORMSetup::createAttributeMetadataConfiguration($this->path,$this->isDevMode);
+	   $connection = DriverManager::getConnection($dbParams,$config);
+	   $this->mealEntityManager = new EntityManager($connection,$config);
+	   $this->drinkEntityManager = new EntityManager($connection,$config);			
+        }  catch (Exception $e) {
+            echo $e->getMessage();   
+        }		
+    }
 	
-	private static function getInstance(): static
+    private static function getInstance(): static
     {
         if (static::$instance === null) {
             static::$instance = new static;
@@ -52,26 +50,23 @@ final class DoctrineEntityManager {
         return static::$instance;
     }
 	
-	private function mealEntityManagerInstance(): EntityManager
+    private function mealEntityManagerInstance(): EntityManager
     {
         try {
-			$entityManager = ($this->mealEntityManager)->getRepository(MealProduct::class);	
-			return $entityManager;	
-	    } catch (Exception $e) {
-                 echo $e->getMessage();   
+           $entityManager = ($this->mealEntityManager)->getRepository(MealProduct::class);	
+	   return $entityManager;	
+	} catch (Exception $e) {
+          echo $e->getMessage();   
         }	   
     }
 	
-	private function drinkEntityManagerInstance(): EntityManager
+    private function drinkEntityManagerInstance(): EntityManager
     {
-        try {
-			$entityManager = ($this->drinkEntityManager)->getRepository(DrinkProduct::class);	
-			return $entityManager;	
-	    } catch (Exception $e) {
-                 echo $e->getMessage();   
-        }	   
-    }
-	
-	
+      try {
+	 $entityManager = ($this->drinkEntityManager)->getRepository(DrinkProduct::class);	
+	 return $entityManager;	
+      } catch (Exception $e) {
+         echo $e->getMessage();   
+      }	   
+    }	
 }
-	
