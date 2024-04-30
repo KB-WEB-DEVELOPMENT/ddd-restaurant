@@ -19,7 +19,7 @@ final class SqlMealProductRepositoryTest extends TestCase
 	/* 
 	
 	1. File specific implementation of all the methods contained in InMemoryMealProductRepositoryTest.php
-    2. Those methods make use of all methods contained in SqlMealProductRepository.php
+        2. Those methods make use of all methods contained in SqlMealProductRepository.php
 	3. Working connection to a MySQL database assumed for testing.
 	
 	*/
