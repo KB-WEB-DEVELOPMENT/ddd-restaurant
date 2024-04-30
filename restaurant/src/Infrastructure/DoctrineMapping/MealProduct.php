@@ -20,10 +20,10 @@ class MealProduct
     #[ORM\Column(type: 'int')]
     private int $cost;
 		
-	public function __construct()
+    public function __construct()
     {
-		$uuid = Uuid::uuid4();
-		$this->id = $uuid->toString();  
+      $uuid = Uuid::uuid4();
+      $this->id = $uuid->toString();  
     }
 
     public function getId(): string
@@ -36,7 +36,7 @@ class MealProduct
         return $this->name;
     }
 	
-	public function setName(string $name): void
+    public function setName(string $name): void
     {
         $this->name = $name;
     }
@@ -46,8 +46,8 @@ class MealProduct
         return $this->cost;
     }
 	
-	public function setCost(int $cost): void
+    public function setCost(int $cost): void
     {		
-		$this->cost = $cost;
+       $this->cost = $cost;
     }		
 }
