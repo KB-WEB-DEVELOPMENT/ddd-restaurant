@@ -9,15 +9,13 @@ final class Price
 {
     private Money $money;
 	
-	public function __construct(
-		private readonly string|int $amount
-	)
-	
-    {
-        $this->money = Money::of($amount,'EUR',roundingMode:RoundingMode::UP); 
+    public function __construct(
+       private readonly string|int $amount
+    )	{
+	$this->money = Money::of($amount,'EUR',roundingMode:RoundingMode::UP); 
     }
 		
-	public function add(string|int $amount): Money
+    public function add(string|int $amount): Money
     {
        return $this->money->plus($amount);
     }
@@ -32,7 +30,7 @@ final class Price
        return $this->money->multipliedBy($amount);
     } 	
 	
-	public function withFoodVat(): Money
+    public function withFoodVat(): Money
     {
        return $this->money->multipliedBy(VatRate::Food);
     }
@@ -42,14 +40,13 @@ final class Price
        return $this->money->multipliedBy(VatRate::Drink);
     }
 
-	public static function toInt(): int
+    public static function toInt(): int
     {
       return $this->money->getMinorAmount()->toInt();   
-	}
+    }
 	
-	public static function formatted(): string
+    public static function formatted(): string
     {
        return $this->money->to($this->money->getContext(),RoundingMode::UP);
-    }
-   	
+    }	
 }
