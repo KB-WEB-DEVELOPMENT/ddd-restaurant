@@ -14,67 +14,64 @@ use PHPUnit\Framework\TestCase;
 final class MealProductTest extends TestCase
 {
 	
-	public function newProduct(): void
-    {
-		$mealProduct = new MealProduct('Meal1',9.99);
+  public function newProduct(): void
+  {
+    $mealProduct = new MealProduct('Meal1',9.99);
 		
-		$this->assertContainsOnlyInstancesOf(MealProduct::class,[$mealProduct]);
-    }
+    $this->assertContainsOnlyInstancesOf(MealProduct::class,[$mealProduct]);
+  }
 	
-	public function newWrongNameProduct(): void
-    {
-		$this->expectException(InvalidProductNameException::class);
+  public function newWrongNameProduct(): void
+  {
+       $this->expectException(InvalidProductNameException::class);
         
-		$mealProduct = new MealProduct('',9.99);
-		
-	}
+	$mealProduct = new MealProduct('',9.99);		
+  }
 	
-	public function newWrongPriceProduct(): void
-    {
-		$this->expectException(InvalidPriceException::class);
+  public function newWrongPriceProduct(): void
+  {
+    $this->expectException(InvalidPriceException::class);
         
-		$mealProduct = new MealProduct('Meal3',-9.99);
-    }
+    $mealProduct = new MealProduct('Meal3',-9.99);
+  }
 		
-	public function updatePrice(): void
-    {
-		$mealProduct = new MealProduct('Meal1',9.99);
+  public function updatePrice(): void
+  {
+    $mealProduct = new MealProduct('Meal1',9.99);
 			
-		$mealProduct->reprice(19.99);
+    $mealProduct->reprice(19.99);
 		
-		$newPriceInt = $mealProduct->priceInt();
+    $newPriceInt = $mealProduct->priceInt();
     
-		$this->assertSame(1999,$newPriceInt);
-	}
+    $this->assertSame(1999,$newPriceInt);
+  }
 	
-	public function updateWrongPrice(): void
-    {
-		$this->expectException(InvalidPriceException::class);
+  public function updateWrongPrice(): void
+  {
+     $this->expectException(InvalidPriceException::class);
 		
-		$mealProduct = new MealProduct('Meal1',9.99);
+     $mealProduct = new MealProduct('Meal1',9.99);
 			
-		$mealProduct->reprice(-19.99);
-	
-	}
+     $mealProduct->reprice(-19.99);	
+  }
 
-	public function updateName(): void
-    {
-		$mealProduct = new MealProduct('Meal1',6.99);
+  public function updateName(): void
+  {
+    $mealProduct = new MealProduct('Meal1',6.99);
 			
-		$mealProduct->changeName('Meal2');
+    $mealProduct->changeName('Meal2');
 		
-		$newName = $mealProduct->name();
+    $newName = $mealProduct->name();
 		
-		$this->assertSame('Meal2',$newName);
-	}
+    $this->assertSame('Meal2',$newName);
+  }
 	
-	public function updateWrongName(): void
-    {
-		$this->expectException(InvalidProductNameException::class);
+  public function updateWrongName(): void
+  {
+    $this->expectException(InvalidProductNameException::class);
 		
-		$mealProduct = new MealProduct('Meal1',7.99);
+    $mealProduct = new MealProduct('Meal1',7.99);
 			
-		$mealProduct->changeName('');
-    }
-	 
+    $mealProduct->changeName('');
+  }	 
 }
