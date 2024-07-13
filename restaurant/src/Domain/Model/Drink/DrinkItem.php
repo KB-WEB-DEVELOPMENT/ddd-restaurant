@@ -15,12 +15,11 @@ final class DrinkItem
     public function __construct( 	
 	private readonly string $drinkProductId,
 	private int $quantity
-    )
-	
-    {
+    ) {
 	if (strlen(trim($drinkProductId)) == 0) {
 		throw new InvalidDrinkProductIdException();
 	}
+	
 	if ($quantity <1) {
 		throw new InvalidQuantityException();  
 	}
@@ -29,7 +28,7 @@ final class DrinkItem
 	$this->quantity = $quantity; 	
 	$this->id = Uuid::uuid4();  
     }
-
+	
     public function id(): UuidInterface
     {
         return $this->id;
