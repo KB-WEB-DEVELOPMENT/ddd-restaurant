@@ -56,13 +56,11 @@ final class DrinkMealOrder
 	   
        $mealProductIds = array_map(fn($mealProduct) => $mealProduct->id(),$mealProducts);
 	   
-       try {
-       		if (!in_array($mealProductId,$mealProductIds)) {
-	   	   throw new InvalidMealProductIdException(); 
-		}	
-	}
+       if (!in_array($mealProductId,$mealProductIds)) {
+       	 throw new InvalidMealProductIdException(); 
+       }	
 	    
-	$this->mealItems[] = $mealItem;
+       $this->mealItems[] = $mealItem;
 	   
     }
 	
@@ -78,12 +76,9 @@ final class DrinkMealOrder
 	    
       $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$drinkProducts);
 	   
-      try {
-       	  if (!in_array($drinkProductId,$drinkProductIds)) {
+      if (!in_array($drinkProductId,$drinkProductIds)) {
 	     throw new InvalidDrinkProductIdException(); 
-	   }	
-	}
-	    
+      }		    
       $this->drinkItems[] = $drinkItem;    
     }
 	
@@ -93,14 +88,12 @@ final class DrinkMealOrder
 		
 	$mealItemsIds = array_map(fn($mealItem) => $mealItem->toString(),$this->mealItems);
 	   
-	try {
-		if (!in_array($mealItemId,$mealItemsIds)) {
-		   throw new InvalidMealItemIdException();
-		}	
-	}
+	if (!in_array($mealItemId,$mealItemsIds)) {
+	  throw new InvalidMealItemIdException();
+	}	
 				
 	if (($key = array_search($mealItemId,$mealItemsIds)) !== false) {
-		unset($this->mealItems[$key]);
+	  unset($this->mealItems[$key]);
 	}	   
     }
 	
@@ -110,14 +103,12 @@ final class DrinkMealOrder
 		
 	$drinkItemsIds = array_map(fn($drinkItem) => $drinkItem->toString(),$this->drinkItems);
 	   
-	try {
-		if (!in_array($drinkItemId,$drinkItemsIds)) {
-		   throw new InvalidDrinkItemIdException(); 
-		}	
-	}
+	if (!in_array($drinkItemId,$drinkItemsIds)) {
+	   throw new InvalidDrinkItemIdException(); 
+	}	
 				
 	if (($key = array_search($drinkItemId,$drinkItemsIds)) !== false) {
-		unset($this->drinkItems[$key]);
+	  unset($this->drinkItems[$key]);
 	}
     }
 	
