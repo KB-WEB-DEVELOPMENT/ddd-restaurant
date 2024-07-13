@@ -18,15 +18,13 @@ final class DrinkItem
     )
 	
     {
-	try {
-	   	if (strlen(trim($drinkProductId)) == 0) {
-	     		throw new InvalidDrinkProductIdException();
-		}
-		if ($quantity <1) {
-			throw new InvalidQuantityException();  
-		}
-	}	
-		
+	if (strlen(trim($drinkProductId)) == 0) {
+		throw new InvalidDrinkProductIdException();
+	}
+	if ($quantity <1) {
+		throw new InvalidQuantityException();  
+	}
+			
 	$this->drinkProductId = $drinkProductId;
 	$this->quantity = $quantity; 	
 	$this->id = Uuid::uuid4();  
