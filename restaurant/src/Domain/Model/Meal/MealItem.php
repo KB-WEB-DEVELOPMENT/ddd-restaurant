@@ -16,15 +16,13 @@ final class MealItem
 	private readonly string $mealProductId,
 	private int $quantity
     ) {
-	try {
-	   if (strlen(trim($mealProductId)) == 0) {
-	      throw new InvalidMealProductIdException();
-	    }
-	    if ($quantity <1) {
-	      throw new InvalidQuantityException();
-	     }
-	}	
-		
+	if (strlen(trim($mealProductId)) == 0) {
+	    throw new InvalidMealProductIdException();
+	}
+	if ($quantity <1) {
+	    throw new InvalidQuantityException();
+	}
+			
 	$this->mealProductId = $mealProductId;
 	$this->quantity = $quantity; 	
 	$this->id = Uuid::uuid4();
@@ -40,7 +38,7 @@ final class MealItem
         return ($this->id)->toString();
     }
 		
-  	public function quantity(): int
+    public function quantity(): int
     {
         return $this->quantity;
     }
