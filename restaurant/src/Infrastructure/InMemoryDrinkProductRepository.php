@@ -27,22 +27,21 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
     */	
     public function store(string $name,int|float $price): void
     {
-       try {
-	  if (strlen(trim($name)) == 0) {			
-	     throw new InvalidProductNameException();
-	   }
-	  if ($price <= 0) {			
-	     throw new InvalidPriceException();  
-	  }	
-       }
+        if (strlen(trim($name)) == 0) {			
+	  throw new InvalidProductNameException();
+	}
+	  
+	if ($price <= 0) {			
+	  throw new InvalidPriceException();  
+	}	
 	
-       $cost = is_int($price) ? new Price($price) : new Price((string)$price);
+        $cost = is_int($price) ? new Price($price) : new Price((string)$price);
 		
-       $drinkProduct = new DrinkProduct($name,$cost);
+        $drinkProduct = new DrinkProduct($name,$cost);
 		
-       $drinkProduct->id =  Uuid::uuid4();
+        $drinkProduct->id =  Uuid::uuid4();
 		
-       $this->drinkProducts[] = $drinkProduct; 		
+        $this->drinkProducts[] = $drinkProduct; 		
     }		
 	
     public static function all(): array
@@ -59,12 +58,10 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
 		
       $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$this->drinkProducts);
 	
-      try {
-	if (!in_array($drinkProductId,$drinkProductIds)) {			
+      if (!in_array($drinkProductId,$drinkProductIds)) {			
            throw new InvalidDrinkProductIdException(); 
-	}	
-      }
-		
+      }	
+      	
       if (($key = array_search($drinkProductId,$drinkProductIds)) !== false) {
 	   return ($this->drinkProducts[$key] instanceof DrinkProduct) ? $this->drinkProducts[$key] : null;	
       } 				
@@ -79,15 +76,13 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
 				
 	 $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$this->drinkProducts);
 	
-	 try {
-	   if (!in_array($drinkProductId,$drinkProductIds)) {			
+	 if (!in_array($drinkProductId,$drinkProductIds)) {			
 	     throw new InvalidDrinkProductIdException(); 
-	   }	
-	 }
-		
-	if (($key = array_search($drinkProductId,$drinkProductIds)) !== false) {		
+	 }	
+	 	
+	 if (($key = array_search($drinkProductId,$drinkProductIds)) !== false) {		
 	   unset($this->drinkProducts[$key]); 
-	}			
+	 }			
     }
 	
     /**
@@ -100,14 +95,13 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
 		
        $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$this->drinkProducts);
 	
-       try {
-	  if (!in_array($drinkProductId,$drinkProductIds)) {				
-	       throw new InvalidDrinkProductIdException(); 
-	   }
-       	  if (strlen(trim($name)) == 0) {				
-	       throw new InvalidProductNameException();
-       	  }		
+       if (!in_array($drinkProductId,$drinkProductIds)) {				
+       	   throw new InvalidDrinkProductIdException(); 
        }
+       	  
+       if (strlen(trim($name)) == 0) {				
+          throw new InvalidProductNameException();
+       }		
 		
        if (($key = array_search($drinkProductId,$drinkProductIds)) !== false) {
 		
@@ -129,15 +123,14 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
 		
       $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$this->drinkProducts);
 	
-      try {
-	 if (!in_array($drinkProductId,$drinkProductIds)) {				
-	    throw new InvalidDrinkProductIdException(); 
-         }
-	 if ($price <= 0) {
-	    throw new InvalidPriceException();  		
-	 }		
+      if (!in_array($drinkProductId,$drinkProductIds)) {				
+         throw new InvalidDrinkProductIdException(); 
       }
-		
+	
+      if ($price <= 0) {
+         throw new InvalidPriceException();  		
+      }		
+      	
       if (($key = array_search($dealProductId,$drinkProductIds)) !== false) {	
          
 	   $drinkProduct = $this->drinkProducts[$key];
