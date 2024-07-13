@@ -19,20 +19,18 @@ final class DrinkProduct
 	private string $name,
 	private int|float $cost 
     ) {
-	try {
-		if (strlen(trim($name)) == 0) {
-			throw new InvalidProductNameException();
-		}
-		if ($cost <= 0) {
-			throw new InvalidPriceException();  
-		}
-	}	
+	if (strlen(trim($name)) == 0) {
+		throw new InvalidProductNameException();
+	}
+	if ($cost <= 0) {
+		throw new InvalidPriceException();  
+	}
 				
 	$this->name = $name;
 	$this->cost = is_int($cost) ? new Price($cost) : new Price((string)$cost);
 	$uuid = Uuid::uuid4();
 	$this->id = $uuid->toString();
-	}
+    }
 
     public function id(): string
     {
@@ -56,21 +54,19 @@ final class DrinkProduct
 	
     public function changeName(string $name): void
     {
-        try {
-		if (strlen(trim($name)) == 0) {
-			throw new InvalidProductNameException();
-		}	
-	}	
+    	if (strlen(trim($name)) == 0) {
+		throw new InvalidProductNameException();
+	}
+	    
 	$this->name = $name;		
     }
 
     public function reprice(int|float $cost): void
     {
-	try {
-		if ($cost <= 0) {
-			throw new InvalidPriceException();  
-		}	
-	}	
+	if ($cost <= 0) {
+		throw new InvalidPriceException();  
+	}		
+
 	unset($this->cost);
 		
 	$this->cost = is_int($cost) ? new Price($cost) : new Price((string)$cost);	
