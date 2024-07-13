@@ -30,15 +30,14 @@ final class SqlDrinkProductRepository implements DrinkProductRepository
     */	
     public function store(string $name,int|float $price): void
     {
-      try {
-	if (strlen(trim($name)) == 0) {
+      if (strlen(trim($name)) == 0) {
 	 throw new InvalidProductNameException();
-	}
-	if ($price <= 0) {
-	  throw new InvalidPriceException();  
-	}	
       }
-		
+	    
+      if ($price <= 0) {
+	  throw new InvalidPriceException();  
+      }	
+      	
       $sql = "INSERT INTO DrinkProductTable (name,price) VALUES (?,?)";
 		
       $cost = is_int($price) ? new Price($price) : new Price((string)$price);
@@ -49,11 +48,12 @@ final class SqlDrinkProductRepository implements DrinkProductRepository
 		
       $params = [$name,$costInt];
 		
-       try {
+      try {
            $statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);	
-	} catch (\PDOException $e)  {
+      } catch (\PDOException $e)  {
            echo $e->getMessage();   
-        }				
+      }
+    }	    
 			
     public static function all(): array
     {
@@ -65,7 +65,7 @@ final class SqlDrinkProductRepository implements DrinkProductRepository
 		echo $e->getMessage();   
         }		
 	return $drinkProductsArray;
-     }
+    }
 
     /**
     * @throws InvalidDrinkProductIdException
@@ -74,12 +74,10 @@ final class SqlDrinkProductRepository implements DrinkProductRepository
     {
 	$drinkProduct = null;
 		
-	try {
-	   if (strlen(trim($drinkProductId)) == 0) {
-	     throw new InvalidDrinkProductIdException();	
-	    }
-         }
-		
+	if (strlen(trim($drinkProductId)) == 0) {
+		throw new InvalidDrinkProductIdException();	
+	}
+         	
 	$sql = "SELECT * FROM DrinkProductTable WHERE id=?";
 				
 	$params = [];
@@ -102,24 +100,22 @@ final class SqlDrinkProductRepository implements DrinkProductRepository
     */
     public function destroy(string $drinkProductId): void
     {	
-      try {
-	 if (strlen(trim($drinkProductId)) == 0) {
-	   throw new InvalidDrinkProductIdException();	
-	 }
+      if (strlen(trim($drinkProductId)) == 0) {
+        throw new InvalidDrinkProductIdException();	
       }
-		
+      	
       $sql = "DELETE FROM DrinkProductTable WHERE id=?";
 				
       $params = [];
 		
       $params = [$drinkProductId];
 		
-       try {
+      try {
 	  $statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);	
-       } catch (\PDOException $e)  {
+      } catch (\PDOException $e)  {
           echo $e->getMessage();   
         }	
-      }
+    }
 	
     /**
     * @throws InvalidDrinkProductIdException
@@ -127,15 +123,14 @@ final class SqlDrinkProductRepository implements DrinkProductRepository
     */	
     public function updateName(string $drinkProductId,string $name): void
     {	
-      try {
-	  if (strlen(trim($drinkProductId)) == 0) {
+       if (strlen(trim($drinkProductId)) == 0) {
 	    throw new InvalidDrinkProductIdException();
-	  }
-	  if (strlen(trim($name)) == 0) {
+       }
+	  
+       if (strlen(trim($name)) == 0) {
 	     throw new InvalidProductNameException();
-	  }	
        }	
-	
+	      
        $sql =  "UPDATE DrinkProductTable SET name=? WHERE id=?";
 				
        $params = [];
@@ -147,7 +142,7 @@ final class SqlDrinkProductRepository implements DrinkProductRepository
 	} catch (\PDOException $e)  {
            echo $e->getMessage();   
         }		
-      }
+    }
 	
     /**
     * @throws InvalidDrinkProductIdException
@@ -155,15 +150,14 @@ final class SqlDrinkProductRepository implements DrinkProductRepository
     */
     public function updatePrice(string $drinkProductId,int|float $price): void
     {
-      try {
-	 if (strlen(trim($drinkProductId)) == 0) {
+       if (strlen(trim($drinkProductId)) == 0) {
 	   throw new InvalidDrinkProductIdException();
-         }
-	 if ($price <= 0) {
-	   throw new InvalidPriceException();  
-	 }	
        }
-		
+	 
+       if ($price <= 0) {
+	   throw new InvalidPriceException();  
+       }	
+       	
        $sql =  "UPDATE DrinkProductTable SET price=? WHERE id=?";
 				
        $cost = is_int($price) ? new Price($price) : new Price((string)$price);
