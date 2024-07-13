@@ -25,15 +25,13 @@ final class DoctrineDrinkProductRepository implements DrinkProductRepository
     */	
     public function store(string $name,int|float $price): void
     {
- 	try {
-	  if (strlen(trim($name)) == 0) {
-	    throw new InvalidProductNameException();
-          }
+        if (strlen(trim($name)) == 0) {
+	  throw new InvalidProductNameException();
+        }
 	  
-	  if ($price <= 0) {
-	     throw new InvalidPriceException();  
-	  }	
-	}
+	if ($price <= 0) {
+	  throw new InvalidPriceException();  
+	}	
 			
 	$cost = is_int($price) ? new Price($cost) : new Price((string)$cost);
 			
@@ -48,7 +46,7 @@ final class DoctrineDrinkProductRepository implements DrinkProductRepository
 	$entityManager->persist($drinkProduct);
 		
 	$entityManager->flush();		 
-      }		
+    }		
 	
     public static function all(): array
     {
@@ -69,12 +67,10 @@ final class DoctrineDrinkProductRepository implements DrinkProductRepository
     */
     public function byId(string $drinkProductId): ?DrinkProduct
     {
-      try {
-	 if (strlen(trim($drinkProductId)) == 0) {
-	    throw new InvalidDrinkProductIdException();	
-	}
+      if (strlen(trim($drinkProductId)) == 0) {
+         throw new InvalidDrinkProductIdException();	
       }
-		
+	    
       $doctrine = DoctrineEntityManager::getInstance();
 		
       $entityManager = $doctrine->drinkEntityManagerInstance();
@@ -89,10 +85,8 @@ final class DoctrineDrinkProductRepository implements DrinkProductRepository
     */
      public function destroy(string $drinkProductId): void
      {	
-	try {
-		if (strlen(trim($drinkProductId)) == 0) {
-			throw new InvalidDrinkProductIdException();	
-		}
+        if (strlen(trim($drinkProductId)) == 0) {
+	  throw new InvalidDrinkProductIdException();	
 	}
 		
 	$doctrine = DoctrineEntityManager::getInstance();
@@ -113,20 +107,19 @@ final class DoctrineDrinkProductRepository implements DrinkProductRepository
     */	
      public function updateName(string $drinkProductId,string $name): void
      {
-	  try {
-	    if (strlen(trim($drinkProductId)) == 0) {
-	      throw new InvalidDrinkProductIdException();	
-	     }
-	     if (strlen(trim($name)) == 0) {
-	        throw new InvalidProductNameException();
-	     }			
-	  }
-			
-	  $drinkProduct = $this->byId($drinkProductId);
+        if (strlen(trim($drinkProductId)) == 0) {
+	 throw new InvalidDrinkProductIdException();	
+	}
+	     
+	if (strlen(trim($name)) == 0) {
+	  throw new InvalidProductNameException();
+	}			
+	  		
+	$drinkProduct = $this->byId($drinkProductId);
 
-	  if (count($drinkProduct) == 1) {
-	 	$drinkProduct->setName($name);
-	  }				
+	if (count($drinkProduct) == 1) {
+	  $drinkProduct->setName($name);
+	}				
      }
 	
     /**
@@ -135,25 +128,24 @@ final class DoctrineDrinkProductRepository implements DrinkProductRepository
     */
     public function updatePrice(string $drinkProductId,int|float $price): void
     {
-      try {
-         if (strlen(trim($drinkProductId)) == 0) {
+       if (strlen(trim($drinkProductId)) == 0) {
 	   throw new InvalidDrinkProductIdException();	
-         }
-         if ($price <= 0) {
-	   throw new InvalidPriceException();  
-	 }			
-      }
-		
+       }
+         
+       if ($price <= 0) {
+          throw new InvalidPriceException();  
+       }			
+      	
       $drinkProduct = $this->byId($drinkProductId);
 		
       if (count($drinkProduct) == 1) {
 			
-	   $cost = is_int($price) ? new Price($price) : new Price((string)$price);
+        $cost = is_int($price) ? new Price($price) : new Price((string)$price);
 
-	   $costInt =  $cost->toInt();
+	$costInt =  $cost->toInt();
 			
-	   $drinkProduct->setCost($costInt);
-       }			
+	$drinkProduct->setCost($costInt);
+      }			
   }
 }
 
