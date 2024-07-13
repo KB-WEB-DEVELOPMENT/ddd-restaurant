@@ -27,20 +27,19 @@ final class InMemoryMealProductRepository implements MealProductRepository
      */	
     public function store(string $name,int|float $price): void
     {
-       try {
-	  if (strlen(trim($name)) == 0) {			
-	   	throw new InvalidProductNameException();
-	  }		
-          if ($price <= 0) {		
-	 	throw new InvalidPriceException();  	
-	  }	
-        }
-	
-	$cost = is_int($price) ? new Price($price) : new Price((string)$price);
+       if (strlen(trim($name)) == 0) {			
+          throw new InvalidProductNameException();
+       }		
+          
+       if ($price <= 0) {		
+          throw new InvalidPriceException();  	
+       }	
+        
+       $cost = is_int($price) ? new Price($price) : new Price((string)$price);
 		
-	$mealProduct = new MealProduct($name,$cost);
+       $mealProduct = new MealProduct($name,$cost);
 		
-	$this->mealProducts[] = $mealProduct; 	
+       $this->mealProducts[] = $mealProduct; 	
      }		
 	
     public static function all(): array
@@ -57,16 +56,14 @@ final class InMemoryMealProductRepository implements MealProductRepository
 		
 	$mealProductIds = array_map(fn($mealProduct) => $mealProduct->id(),$this->mealProducts);
 	
-	try {
-	   if (!in_array($mealProductId,$mealProductIds)) {			
-	      throw new InvalidMealProductIdException(); 
-	    }	
-        }
+	if (!in_array($mealProductId,$mealProductIds)) {			
+	  throw new InvalidMealProductIdException(); 
+	}	
 		
 	if (($key = array_search($mealProductId,$mealProductIds)) !== false) {		
-		return ($this->mealProducts[$key] instanceof MealProduct) ? $this->mealProducts[$key] : null;
+	  return ($this->mealProducts[$key] instanceof MealProduct) ? $this->mealProducts[$key] : null;
 	} 	
-      }
+     }
 
     /**
     * @throws InvalidMealProductIdException
@@ -77,12 +74,10 @@ final class InMemoryMealProductRepository implements MealProductRepository
 		
        $mealProductIds = array_map(fn($mealProduct) => $mealProduct->id(),$this->mealProducts);
 	
-       try {
-          if (!in_array($mealProductId,$mealProductIds)) {				
-	     throw new InvalidMealProductIdException(); 
-	   }	
-       }
-		
+       if (!in_array($mealProductId,$mealProductIds)) {				
+          throw new InvalidMealProductIdException(); 
+       }	
+       	
        if (($key = array_search($mealProductId,$mealProductIds)) !== false) {		
 	  unset($this->mealProducts[$key]);
        }			
@@ -98,23 +93,21 @@ final class InMemoryMealProductRepository implements MealProductRepository
 		
        $mealProductIds = array_map(fn($mealProduct) => $mealProduct->id(),$this->mealProducts);
 	
-	try {
-	   if (!in_array($mealProductId,$mealProductIds)) {				
-	      throw new InvalidMealProductIdException(); 
-	   }
+       if (!in_array($mealProductId,$mealProductIds)) {				
+          throw new InvalidMealProductIdException(); 
+       }
 
-	   if (strlen(trim($name)) == 0) {				
-	     throw new InvalidProductNameException();
-	   }		
-        }
+       if (strlen(trim($name)) == 0) {				
+         throw new InvalidProductNameException();
+       }		
+        	
+       if (($key = array_search($mealProductId,$mealProductIds)) !== false) {
 		
-	if (($key = array_search($mealProductId,$mealProductIds)) !== false) {
-		
-		$mealProduct = $this->mealProducts[$key];
+          $mealProduct = $this->mealProducts[$key];
 			
-		$mealProduct->name = $name;
+	  $mealProduct->name = $name;
 			
-		$this->mealProducts[$key] = $mealProduct; 		
+	  $this->mealProducts[$key] = $mealProduct; 		
 	}		
      }
 	
@@ -128,22 +121,21 @@ final class InMemoryMealProductRepository implements MealProductRepository
 		
 	$mealProductIds = array_map(fn($mealProduct) => $mealProduct->id(),$this->mealProducts);
 	
-	try {
-	   if (!in_array($mealProductId,$mealProductIds)) {				
-	      throw new InvalidMealProductIdException(); 
-	   }
-           if ($price <= 0) {				
-	      throw new InvalidPriceException();  
-	   }		
+	if (!in_array($mealProductId,$mealProductIds)) {				
+	 throw new InvalidMealProductIdException(); 
 	}
+	    
+        if ($price <= 0) {				
+	      throw new InvalidPriceException();  
+	}		
 		
 	if (($key = array_search($mealProductId,$mealProductIds)) !== false) {
 		
-		$mealProduct = $this->mealProducts[$key];
+	  $mealProduct = $this->mealProducts[$key];
 			
-		$mealProduct->price = is_int($price) ? new Price($price) : new Price((string)$price);;
+	  $mealProduct->price = is_int($price) ? new Price($price) : new Price((string)$price);;
 			
-		$this->mealProducts[$key] = $mealProduct; 		
+	  $this->mealProducts[$key] = $mealProduct; 		
 	}
      }
 }
