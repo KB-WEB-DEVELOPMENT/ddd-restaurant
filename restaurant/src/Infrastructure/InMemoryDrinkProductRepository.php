@@ -28,12 +28,12 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
     public function store(string $name,int|float $price): void
     {
         if (strlen(trim($name)) == 0) {			
-	  throw new InvalidProductNameException();
-	}
+	  		throw new InvalidProductNameException();
+		}
 	  
-	if ($price <= 0) {			
-	  throw new InvalidPriceException();  
-	}	
+		if ($price <= 0) {			
+	  		throw new InvalidPriceException();  
+		}	
 	
         $cost = is_int($price) ? new Price($price) : new Price((string)$price);
 		
@@ -59,11 +59,11 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
       $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$this->drinkProducts);
 	
       if (!in_array($drinkProductId,$drinkProductIds)) {			
-           throw new InvalidDrinkProductIdException(); 
+    		throw new InvalidDrinkProductIdException(); 
       }	
       	
       if (($key = array_search($drinkProductId,$drinkProductIds)) !== false) {
-	   return ($this->drinkProducts[$key] instanceof DrinkProduct) ? $this->drinkProducts[$key] : null;	
+			return ($this->drinkProducts[$key] instanceof DrinkProduct) ? $this->drinkProducts[$key] : null;	
       } 				
    }
 
@@ -72,17 +72,17 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
     */
     public function destroy(string $drinkProductId): void
     {	
-	 $drinkProductIds = [];
+	 	$drinkProductIds = [];
 				
-	 $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$this->drinkProducts);
+	 	$drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$this->drinkProducts);
 	
-	 if (!in_array($drinkProductId,$drinkProductIds)) {			
-	     throw new InvalidDrinkProductIdException(); 
-	 }	
+	 	if (!in_array($drinkProductId,$drinkProductIds)) {			
+	    	throw new InvalidDrinkProductIdException(); 
+	 	}	
 	 	
-	 if (($key = array_search($drinkProductId,$drinkProductIds)) !== false) {		
-	   unset($this->drinkProducts[$key]); 
-	 }			
+	 	if (($key = array_search($drinkProductId,$drinkProductIds)) !== false) {		
+	   		unset($this->drinkProducts[$key]); 
+	 	}			
     }
 	
     /**
@@ -105,12 +105,12 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
 		
        if (($key = array_search($drinkProductId,$drinkProductIds)) !== false) {
 		
-		$drinkProduct = $this->drinkProducts[$key];
+			$drinkProduct = $this->drinkProducts[$key];
 			
-		$drinkProduct->name = $name;
+			$drinkProduct->name = $name;
 			
-		$this->drinkProducts[$key] = $drinkProduct; 		
-	}		
+			$this->drinkProducts[$key] = $drinkProduct; 		
+	   }		
      }
 	
     /**
@@ -119,26 +119,25 @@ final class InMemoryDrinkProductRepository implements DrinkProductRepository
     */
     public function updatePrice(string $drinkProductId,int|float $price): void
     {		
-      $drinkProductIds = [];
+      	$drinkProductIds = [];
 		
-      $drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$this->drinkProducts);
+      	$drinkProductIds = array_map(fn($drinkProduct) => $drinkProduct->id(),$this->drinkProducts);
 	
-      if (!in_array($drinkProductId,$drinkProductIds)) {				
-         throw new InvalidDrinkProductIdException(); 
-      }
+      	if (!in_array($drinkProductId,$drinkProductIds)) {				
+        		throw new InvalidDrinkProductIdException(); 
+      	}
 	
-      if ($price <= 0) {
-         throw new InvalidPriceException();  		
-      }		
+      	if ($price <= 0) {
+        		throw new InvalidPriceException();  		
+      	}		
       	
       if (($key = array_search($dealProductId,$drinkProductIds)) !== false) {	
          
-	   $drinkProduct = $this->drinkProducts[$key];
+	 		$drinkProduct = $this->drinkProducts[$key];
 			
-	   $drinkProduct->price = is_int($price) ? new Price($price) : new Price((string)$price);;
+	   	    $drinkProduct->price = is_int($price) ? new Price($price) : new Price((string)$price);;
 			
-	   $this->drinkProducts[$key] = $drinkProduct; 		
+	   		$this->drinkProducts[$key] = $drinkProduct; 		
        }
     }
 }
-
