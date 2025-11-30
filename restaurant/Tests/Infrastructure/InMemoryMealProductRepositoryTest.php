@@ -22,11 +22,11 @@ final class InMemoryMealProductRepositoryTest extends TestCase
    {
         $this->mealProducts[] = new MealProduct('Meal1',9.99);
         $this->mealProducts[] = new MealProduct('Meal2',15.99);		
-	$this->mealProducts[] = new MealProduct('Meal3',17.99);
+		$this->mealProducts[] = new MealProduct('Meal3',17.99);
 	
-	$this->repo = new InMemoryMealProductRepository();
+		$this->repo = new InMemoryMealProductRepository();
 		
-	($this->repo)->mealProducts = $this->mealProducts;
+		($this->repo)->mealProducts = $this->mealProducts;
    }
 		
   public function newMealProduct(): void
@@ -53,10 +53,10 @@ final class InMemoryMealProductRepositoryTest extends TestCase
 	
  public function allMealProducts(): void
  {
-   $mealProductsArray = [];
-   $mealProductsArray = ($this->repo)::all();
+     $mealProductsArray = [];
+     $mealProductsArray = ($this->repo)::all();
  		
-   $this->assertCount(3,$mealProductsArray); 
+     $this->assertCount(3,$mealProductsArray); 
  }
 	
 public function mealProductById(): void
@@ -80,10 +80,10 @@ public function mealProductByWrongId(): void
    $randomUuidsStrings = [];
 				
    $randomUuidsStrings = [
-	'a8c3de3d-1fea-4d7c-b8b0-29f63c4c3451',
-	'b8c3de3d-1fee-4d7c-b8b0-29f63c4c3452',
-	'c8c3de3d-1fea-4d7c-b8b0-29f63c8c3453',
-	'd8c3se3d-1fea-4d7c-b8b0-29f63c4c3454'
+		'a8c3de3d-1fea-4d7c-b8b0-29f63c4c3451',
+		'b8c3de3d-1fee-4d7c-b8b0-29f63c4c3452',
+		'c8c3de3d-1fea-4d7c-b8b0-29f63c8c3453',
+		'd8c3se3d-1fea-4d7c-b8b0-29f63c4c3454'
    ];
 		
   $randomUuidString = $randomUuidsStrings[array_rand($randomUuidsStrings,1)];
@@ -116,10 +116,10 @@ public function removeWrongMealProduct(): void
    $randomUuidsStrings = [];
 			
    $randomUuidsStrings = [
-       'a8c3de3d-1fea-4d7c-b8b0-29f63c4c3451',
-	'b8c3de3d-1fee-4d7c-b8b0-29f63c4c3452',
-	'c8c3de3d-1fea-4d7c-b8b0-29f63c8c3453',
-	'd8c3se3d-1fea-4d7c-b8b0-29f63c4c3454'
+    	'a8c3de3d-1fea-4d7c-b8b0-29f63c4c3451',
+		'b8c3de3d-1fee-4d7c-b8b0-29f63c4c3452',
+		'c8c3de3d-1fea-4d7c-b8b0-29f63c8c3453',
+		'd8c3se3d-1fea-4d7c-b8b0-29f63c4c3454'
   ];
 		
    $randomUuidString = $randomUuidsStrings[array_rand($randomUuidsStrings,1)];
