@@ -26,10 +26,11 @@ final class DoctrineMealProductRepository implements MealProductRepository
     public function store(string $name,int|float $price): void
     {			
        if (strlen(trim($name)) == 0) {
-	    throw new InvalidProductNameException();
+			throw new InvalidProductNameException();
        }
+		
        if ($price <= 0) {
-	   throw new InvalidPriceException();  
+	   		throw new InvalidPriceException();  
        }	
        	
        $cost = is_int($price) ? new Price($cost) : new Price((string)$cost);
@@ -44,7 +45,7 @@ final class DoctrineMealProductRepository implements MealProductRepository
 								
        $entityManager->persist($mealProduct);
 		
-	$entityManager->flush();
+		$entityManager->flush();
 			
      }		
 	
@@ -52,13 +53,13 @@ final class DoctrineMealProductRepository implements MealProductRepository
     {
         $mealProducts = [];
 		
-	$doctrine = DoctrineEntityManager::getInstance();
-		
-	$entityManager = $doctrine->mealEntityManagerInstance();
-		
-	$mealProducts = $entityManager->findAll();
-				
-	return is_array($mealProducts) ? $mealProducts : [];
+		$doctrine = DoctrineEntityManager::getInstance();
+			
+		$entityManager = $doctrine->mealEntityManagerInstance();
+			
+		$mealProducts = $entityManager->findAll();
+					
+		return is_array($mealProducts) ? $mealProducts : [];
      }
 
     /**
@@ -66,17 +67,17 @@ final class DoctrineMealProductRepository implements MealProductRepository
     */
     public function byId(string $mealProductId): ?MealProduct
     {	
-	if (strlen(trim($mealProductId)) == 0) {
-	  throw new InvalidMealProductIdException();	
-	}
+		if (strlen(trim($mealProductId)) == 0) {
+	  		throw new InvalidMealProductIdException();	
+		}
 		
-	$doctrine = DoctrineEntityManager::getInstance();
-		
-	$entityManager = $doctrine->mealEntityManagerInstance();
-		
-	$mealProduct = $entityManager->find('MealProduct',$mealProductId);
+		$doctrine = DoctrineEntityManager::getInstance();
 			
-	return (count($mealProduct) == 1) ? $mealProduct : null;
+		$entityManager = $doctrine->mealEntityManagerInstance();
+			
+		$mealProduct = $entityManager->find('MealProduct',$mealProductId);
+				
+		return (count($mealProduct) == 1) ? $mealProduct : null;
     }
 
     /**
@@ -85,7 +86,7 @@ final class DoctrineMealProductRepository implements MealProductRepository
     public function destroy(string $mealProductId): void
     {	
       if (strlen(trim($mealProductId)) == 0) {
-	  throw new InvalidMealProductIdException();	
+	  		throw new InvalidMealProductIdException();	
       }
      
       $doctrine = DoctrineEntityManager::getInstance();
@@ -95,8 +96,8 @@ final class DoctrineMealProductRepository implements MealProductRepository
       $mealProduct = $entityManager->find('MealProduct',$mealProductId);
 		
       if (count($mealProduct) == 1) {
-	 $entityManager->remove($mealProduct);
-	 $entityManager->flush();	
+			$entityManager->remove($mealProduct);
+		 	$entityManager->flush();	
       }		
     }
 	
@@ -106,19 +107,21 @@ final class DoctrineMealProductRepository implements MealProductRepository
     */	
     public function updateName(string $mealProductId,string $name): void
     {	
+		
       if (strlen(trim($mealProductId)) == 0) {
-        throw new InvalidMealProductIdException();	
+    		throw new InvalidMealProductIdException();	
       }
       
       if (strlen(trim($name)) == 0) {
-         throw new InvalidProductNameException();
+         	throw new InvalidProductNameException();
       }			
       
       $mealProduct = $this->byId($mealProductId);
 
       if (count($mealProduct) == 1) {
-	 $mealProduct->setName($name);
-      }		
+			$mealProduct->setName($name);
+      }
+		
     }
 	
     /**
@@ -127,23 +130,24 @@ final class DoctrineMealProductRepository implements MealProductRepository
     */
     public function updatePrice(string $mealProductId,int|float $price): void
     {
-	 if (strlen(trim($mealProductId)) == 0) {
-	   throw new InvalidMealProductIdException();	
+	 	if (strlen(trim($mealProductId)) == 0) {
+	   		throw new InvalidMealProductIdException();	
          }
 	    
-	 if ($price <= 0) {
-	   throw new InvalidPriceException();  
+	 	 if ($price <= 0) {
+	   		throw new InvalidPriceException();  
          }			
        	
          $mealProduct = $this->byId($mealProductId);
 		
          if (count($mealProduct) == 1) {
 			
-	   $cost = is_int($price) ? new Price($price) : new Price((string)$price);
+	   			$cost = is_int($price) ? new Price($price) : new Price((string)$price);
 
-	   $costInt =  $cost->toInt();
+	   			$costInt =  $cost->toInt();
 			
-	   $mealProduct->setCost($costInt);
-	}		
-     }
+				$mealProduct->setCost($costInt);
+		}		
+   }
 }
+
