@@ -18,11 +18,11 @@ final class SqlMealProductRepository implements MealProductRepository
     public function __construct(		
 	private SqlConnectionManager $sqlConnectionManager; 
     ){
-	$sqlConnectionManager = SqlConnectionManager::getInstance();
+		$sqlConnectionManager = SqlConnectionManager::getInstance();
 		
-	$this->sqlConnectionManager = $sqlConnectionManager
+		$this->sqlConnectionManager = $sqlConnectionManager
 		
-	($this->sqlConnectionManager)->createMealProductTable();
+		($this->sqlConnectionManager)->createMealProductTable();
     }
 		
     /**
@@ -31,41 +31,42 @@ final class SqlMealProductRepository implements MealProductRepository
     */	
     public function store(string $name,int|float $price): void
     {
-      if (strlen(trim($name)) == 0) {
-	   throw new InvalidProductNameException();
-      }
-      if ($price <= 0) {
-	   throw new InvalidPriceException();  
-      }	
+    	if (strlen(trim($name)) == 0) {
+	   		throw new InvalidProductNameException();
+      	}
+		
+      	if ($price <= 0) {
+	   		throw new InvalidPriceException();  
+      	}	
 
-      $sql = "INSERT INTO MealProductTable (name,price) VALUES (?,?)";
+        $sql = "INSERT INTO MealProductTable (name,price) VALUES (?,?)";
 		
-      $cost = is_int($price) ? new Price($price) : new Price((string)$price);
+        $cost = is_int($price) ? new Price($price) : new Price((string)$price);
 		
-      $costInt = $cost->priceInt();
+        $costInt = $cost->priceInt();
 		
-      $params = [];
+        $params = [];
 		
-      $params = [$name,$costInt];
+        $params = [$name,$costInt];
 		
-      try {
-	 $statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);	
-      } catch (\PDOException $e)  {
-         echo $e->getMessage();   
-      }				
+        try {
+	 		$statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);	
+        } catch (\PDOException $e)  {
+         		echo $e->getMessage();   
+          }				
     }		
 	
     public static function all(): array
     {
-       $mealProductsArray = [];
+        $mealProductsArray = [];
 		
-	try {	
-	   $mealProductsArray = ($this->sqlConnectionManager)->query("SELECT * FROM MealProductTable")->fetchAll();	
+		try {	
+	   		$mealProductsArray = ($this->sqlConnectionManager)->query("SELECT * FROM MealProductTable")->fetchAll();	
         } catch (\PDOException $e)  {
-            echo $e->getMessage();   
+        	echo $e->getMessage();   
         }
 			
-	return $mealProductsArray;
+	    return $mealProductsArray;
      }
 
     /**
@@ -73,28 +74,28 @@ final class SqlMealProductRepository implements MealProductRepository
     */
     public function byId(string $mealProductId): ?MealProduct
     {
-	$mealProduct = null;
+		$mealProduct = null;
 		
-	if (strlen(trim($mealProductId)) == 0) {
-	   throw new InvalidMealProductIdException();	
-	}
+		if (strlen(trim($mealProductId)) == 0) {
+	   		throw new InvalidMealProductIdException();	
+		}
 		
-	$sql = "SELECT * FROM MealProductTable WHERE id=?";
+		$sql = "SELECT * FROM MealProductTable WHERE id=?";
 				
-	$params = [];
+		$params = [];
 		
-	$params = [$mealProductId];
+		$params = [$mealProductId];
 		
-	try {
-	   $statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);
+		try {
+	    	$statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);
 
-	   $mealProduct = $statement->fetchObject('MealProduct');
+	   		$mealProduct = $statement->fetchObject('MealProduct');
 		
-	 } catch (\PDOException $e)  {
+	 	} catch (\PDOException $e)  {
              echo $e->getMessage();   
          }
 
-	return ($mealProduct instanceof MealProduct) ? $mealProduct : null;		
+		return ($mealProduct instanceof MealProduct) ? $mealProduct : null;		
     }
 
     /**
@@ -102,21 +103,21 @@ final class SqlMealProductRepository implements MealProductRepository
     */
     public function destroy(string $mealProductId): void
     {	
-      if (strlen(trim($mealProductId)) == 0) {
-	  throw new InvalidMealProductIdException();	
-      }
+    	if (strlen(trim($mealProductId)) == 0) {
+	  		throw new InvalidMealProductIdException();	
+      	}
       	
-      $sql = "DELETE FROM MealProductTable WHERE id=?";
+      	$sql = "DELETE FROM MealProductTable WHERE id=?";
 				
-      $params = [];
+      	$params = [];
 		
-      $params = [$mealProductId];
+      	$params = [$mealProductId];
 		
-      try {
-         $statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);	
-       } catch (\PDOException $e)  {
-          echo $e->getMessage();   
-       }	
+      	try {
+        		$statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);	
+        	} catch (\PDOException $e)  {
+          		echo $e->getMessage();   
+       	}	
     }
 	
     /**
@@ -125,53 +126,53 @@ final class SqlMealProductRepository implements MealProductRepository
     */	
     public function updateName(string $mealProductId,string $name): void
     {	
-      if (strlen(trim($mealProductId)) == 0) {
-         throw new InvalidMealProductIdException();
-      }
+    		if (strlen(trim($mealProductId)) == 0) {
+         		throw new InvalidMealProductIdException();
+      		}
       
-      if (strlen(trim($name)) == 0) {
-	 throw new InvalidProductNameException();
-      }	
+      		if (strlen(trim($name)) == 0) {
+	 			throw new InvalidProductNameException();
+      		}	
       	
-      $sql =  "UPDATE MealProductTable SET name=? WHERE id=?";
-				
-      $params = [];
+	        $sql =  "UPDATE MealProductTable SET name=? WHERE id=?";
+					
+	        $params = [];
+			
+	        $params = [$name,$mealProductId];
 		
-      $params = [$name,$mealProductId];
-		
-      try {
-	$statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);		
-      } catch (\PDOException $e)  {
-          echo $e->getMessage();   
-        }		
-      }
-	
+      		try {
+					$statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);		
+      			} catch (\PDOException $e)  {
+          			echo $e->getMessage();   
+        	}		 		
+	}
     /**
     * @throws InvalidMealProductIdException
     * @throws InvalidPriceException
     */
     public function updatePrice(string $mealProductId,int|float $price): void
     {
-      if (strlen(trim($mealProductId)) == 0) {
-        throw new InvalidMealProductIdException();
-      }
-      if ($price <= 0) {
-        throw new InvalidPriceException();  
-      }	
+      	if (strlen(trim($mealProductId)) == 0) {
+        	throw new InvalidMealProductIdException();
+      	}
+      
+		if ($price <= 0) {
+        	throw new InvalidPriceException();  
+      	}	
         	
-      $sql =  "UPDATE MealProductTable SET price=? WHERE id=?";
+      	$sql =  "UPDATE MealProductTable SET price=? WHERE id=?";
 				
-      $cost = is_int($price) ? new Price($price) : new Price((string)$price);
+      	$cost = is_int($price) ? new Price($price) : new Price((string)$price);
 		
-      $costInt = $cost->priceInt();
+      	$costInt = $cost->priceInt();
 		
-      $params = [];
+      	$params = [];
 		
-      $params = [$costInt,$mealProductId];
+      	$params = [$costInt,$mealProductId];
 		
-      try {
-        $statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);	
-      } catch (\PDOException $e)  {
+      	try {
+        	$statement = ($this->sqlConnectionManager)->executeStatement($sql,$params);	
+      	} catch (\PDOException $e)  {
             echo $e->getMessage();   
         }
     }
