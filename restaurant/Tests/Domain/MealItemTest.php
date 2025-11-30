@@ -17,43 +17,45 @@ final class MealItemTest extends TestCase
 {
     public function newMealItem(): void
     {
-         $mealItem = new MealItem('111111',2);
+    	$mealItem = new MealItem('111111',2);
 		
-	 $this->assertContainsOnlyInstancesOf(MealItem::class,[$mealItem]);
+	 	$this->assertContainsOnlyInstancesOf(MealItem::class,[$mealItem]);
     }
 	
     public function wrongNewMealItemProductId(): void
     {
          $this->expectException(InvalidMealProductIdException::class);
 		
-	 $mealItem = new MealItem('',2);
+	 	$mealItem = new MealItem('',2);
     }
 	
     public function wrongNewMealItemQuantity(): void
     {
          $this->expectException(InvalidQuantityException::class);
 		
-	 $mealItem = new MealItem('111111',-3);	
+	 	$mealItem = new MealItem('111111',-3);	
     }
 	
    public function testUuidObject(): void
     {
         $mealItem = new MealItem('111111',2);
-	$uuidObject = $mealItem->id();
-	$this->assertTrue($uuidObject instanceof TestInterface);
+		
+		$uuidObject = $mealItem->id();
+		
+		$this->assertTrue($uuidObject instanceof TestInterface);
     }
 	
     public function testUuidString(): void
     {
-      $mealItem = new MealItem('333333',1);
+      	$mealItem = new MealItem('333333',1);
 		
-      $fromMethod = $mealItem->toString();
+      	$fromMethod = $mealItem->toString();
 		
-      $id = $mealItem->id();
+      	$id = $mealItem->id();
 		
-      $fromUuid = $id->toString(); 
+      	$fromUuid = $id->toString(); 
 
-      $this->assertSame($fromMethod,$fromUuid);			
+      	$this->assertSame($fromMethod,$fromUuid);			
     }
 	
     public function testQuantity(): void
@@ -65,3 +67,4 @@ final class MealItemTest extends TestCase
        $this->assertSame(2,$quantity);
     }
 }
+
